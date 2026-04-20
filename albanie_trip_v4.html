@@ -1,0 +1,132 @@
+
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f6f7ff;
+    --color-border-tertiary: #e4e7f2;
+    --color-border-secondary: #dfe4f1;
+    --color-text-primary: #141825;
+    --color-text-secondary: #5f6b86;
+    --color-text-tertiary: #7f8a9e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #eef2fb; color: var(--color-text-primary); }
+  .plan { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  .day-card { position: relative; border-radius: 28px; border: 0.5px solid var(--color-border-tertiary); background: linear-gradient(180deg, #ffffff 0%, #fefeff 100%); overflow: hidden; margin-bottom: 1.75rem; box-shadow: 0 24px 60px rgba(33, 55, 125, 0.08); }
+  .day-card::before { content: ""; position: absolute; top: -36px; right: -30px; width: 132px; height: 132px; border-radius: 50%; background: rgba(80, 119, 255, 0.10); }
+  .day-card::after { content: ""; position: absolute; bottom: -20px; left: -20px; width: 104px; height: 104px; border-radius: 28px; background: rgba(255, 201, 77, 0.12); }
+  .day-card-header { position: relative; z-index: 1; padding: 1.2rem 1.5rem 0.9rem; border-bottom: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; gap: 14px; }
+  .decor-panel { background: rgba(236, 241, 255, 0.7); border-radius: 18px; padding: 0.9rem 1rem; margin-top: 0.5rem; }
+  .plan .sec { font-size: 13px; font-weight: 700; color: #5563a6; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+  .day-badge { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); white-space: nowrap; }
+  .day-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
+  .day-sub { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+  .stop { display: flex; gap: 14px; padding: 0.85rem 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); align-items: flex-start; }
+  .stop:last-child { border-bottom: none; }
+  .si { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .w { background: #E6F1FB; color: #185FA5; }
+  .f { background: #FAEEDA; color: #BA7517; }
+  .d { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .n { background: #FAECE7; color: #993C1D; }
+  .s { background: #EAF3DE; color: #3B6D11; }
+  .hi { background: #EEEDFE; color: #3C3489; }
+  .stop-label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .stop-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 8px; line-height: 1.6; background: rgba(233, 240, 255, 0.72); padding: 0.9rem 1rem; border-radius: 18px; border: 1px solid rgba(145, 158, 171, 0.12); }
+  .stop-time { font-size: 11px; color: var(--color-text-tertiary); margin-top: 10px; }
+  .tip { background: #E1F5EE; border-left: 3px solid #1D9E75; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.65rem 1rem; margin: 0 1.25rem 1rem; font-size: 12px; color: #085041; line-height: 1.5; }
+  .warn { background: #FAEEDA; border-left: 3px solid #BA7517; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.65rem 1rem; margin: 0 1.25rem 1rem; font-size: 12px; color: #633806; line-height: 1.5; }
+  .new-badge { display: inline-block; background: #EEEDFE; color: #3C3489; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 8px; font-weight: 500; }
+  .star { display: inline-block; background: #E6F1FB; color: #0C447C; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 8px; font-weight: 500; }
+  .budget { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 1rem; }
+  .bc { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+  .bl { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .bv { font-size: 17px; font-weight: 500; color: var(--color-text-primary); }
+  .bn { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .sec { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 1.5rem; }
+  .ov-card { border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); padding: 0.75rem 1rem; background: var(--color-background-primary); }
+  .ov-day { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .ov-city { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .ov-theme { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+</style>
+
+<div class="plan">
+
+<!-- Overzicht -->
+<div class="sec">Overnachtingsplan</div>
+<div class="overview">
+  <div class="ov-card"><div class="ov-day">Zon</div><div class="ov-city">🏙 Tirana</div><div class="ov-theme">Aankomst</div></div>
+  <div class="ov-card"><div class="ov-day">Ma</div><div class="ov-city">🏙 Tirana</div><div class="ov-theme">Stad + bergen</div></div>
+  <div class="ov-card"><div class="ov-day">Di</div><div class="ov-city">⚓ Vlorë</div><div class="ov-theme">Bootdag</div></div>
+  <div class="ov-card"><div class="ov-day">Wo</div><div class="ov-city">🏖 Himarë</div><div class="ov-theme">Gjipë + snorkelen</div></div>
+  <div class="ov-card"><div class="ov-day">Do</div><div class="ov-city">🌊 Sarandë</div><div class="ov-theme">Blue Eye</div></div>
+</div>
+
+<!-- Dag 0 -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Zondag nacht</span><div><div class="day-title">Aankomst Tirana</div><div class="day-sub">Auto ophalen, inchecken, slapen</div></div></div>
+  <div class="stop"><div class="si s">🛬</div><div><div class="stop-label">Aankomst TIA — 00:30</div><div class="stop-desc deco-panel">Auto ophalen bij verhuurkantoor (check op voorhand of 24u open). Hotel Tirana centrum.</div><div class="stop-time">~01:30 op hotel</div></div></div>
+</div>
+
+<!-- Dag 1: Tirana -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Maandag</span><div><div class="day-title">Tirana + Gamti Mountain</div><div class="day-sub">Stad ochtend — Bovilla meer & bergbalkon middag</div></div></div>
+  <div class="stop"><div class="si f">☕</div><div><div class="stop-label">Ontbijt Blloku</div><div class="stop-desc deco-panel">Byrek, koffie, terrasje. Levendigste wijk van de stad.</div><div class="stop-time">09:00</div></div></div>
+  <div class="stop"><div class="si w">🏛</div><div><div class="stop-label">Skanderbeg Square & Bunk'Art 2</div><div class="stop-desc">Communistische bunkermuseum over de geheime politie Sigurimi. Uniek en confronterend. €3 p.p. Daarna stroll door Blloku.</div><div class="stop-time">10:00 – 12:30</div></div></div>
+  <div class="stop"><div class="si f">🍽</div><div><div class="stop-label">Lunch Tirana centrum</div><div class="stop-desc">Lokaal restaurant voor vertrek naar de bergen. Tave kosi of fergese. ~€8 p.p.</div><div class="stop-time">12:30 – 13:30</div></div></div>
+  <div class="stop"><div class="si d">🚗</div><div><div class="stop-label">Rit naar Bovilla Lake (~1u)</div><div class="stop-desc">~21km van Tirana, waarvan de helft onverharde weg. Stop onderweg bij de Bovilla canyon voor een korte fotopauze en eventueel een zwemplek in de rivier.</div><div class="stop-time">13:30 – 14:30</div></div></div>
+  <div class="stop"><div class="si hi">⛰</div><div>
+    <div class="stop-label">Gamti Mountain — balkon hike + Bovilla meer</div>
+    <div class="stop-desc">Vertrek vanuit het meer omhoog naar het beroemde uitkijkpunt ("balkon"). ~40 min omhoog, ~30 min terug — niet lang maar elk stap geeft een beter uitzicht. Boven: panorama over het turquoise Bovilla meer omgeven door beboste bergtoppen. Neem lunch/snacks mee om boven te eten. Op de terugweg optioneel zwemmen in de rivier onder de dam (mogelijk mei–september).</div>
+    <div class="stop-time">14:30 – 17:30</div>
+  </div></div>
+  <div class="stop"><div class="si d">🚗</div><div><div class="stop-label">Terug naar Tirana (~1u)</div><div class="stop-desc">Douchen, omfrisssen voor de avond.</div><div class="stop-time">17:30 – 18:30</div></div></div>
+  <div class="stop"><div class="si n">🍸</div><div><div class="stop-label">Aperitief + diner + Blloku nightlife</div><div class="stop-desc">Raki als aperitief. Diner op een terras. Daarna rooftop bars en clubs in Blloku. Morgen geen vroeg vertrek — Vlorë is maar 2u rijden.</div><div class="stop-time">20:00 →</div></div></div>
+  <div class="tip">💡 Je kunt Gamti zelfstandig doen met de eigen huurauto — geen gids nodig voor het balkon-traject. Parkeer bij het meer, volg het pad omhoog. Neem wandelschoenen, water en een windjack mee — het kan frisser zijn boven.</div>
+</div>
+
+<!-- Dag 2: Vlorë -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Dinsdag</span><div><div class="day-title">Tirana → Vlorë<span class="star">⭐ bootdag</span></div><div class="day-sub">Karaburun, zeegrotten & Sazan eiland</div></div></div>
+  <div class="stop"><div class="si d">🚗</div><div><div class="stop-label">Rit Tirana → Vlorë (~2u)</div><div class="stop-desc deco-panel">Rustige ochtendrit langs de kust. Geen bijzondere stops — bewaar energie voor het water.</div><div class="stop-time">09:00 – 11:00</div></div></div>
+  <div class="stop"><div class="si w">⛵</div><div><div class="stop-label">Boottour Karaburun + Haxhi Ali Cave + Grama Bay</div><div class="stop-desc">Speedboottour naar het Karaburun Marine Park — alleen per boot bereikbaar. Stops: Haxhi Ali zeegrot (zwemmen binnenin), Grama Bay (turkooisblauw, snorkelen), verborgen baaitjes langs kliffen. Snorkeluitrusting inbegrepen. Operators: GoBoatVlore, 3 Fiori, BoatVentours. ~€30–45 p.p. groepstour of ~€100–130 privé voor jullie drietjes.</div><div class="stop-time">11:30 – 17:30</div></div></div>
+  <div class="stop"><div class="si f">🐟</div><div><div class="stop-label">Diner Vlorë promenade</div><div class="stop-desc">Verse vis aan de boulevard. Goede seafoodrestaurants aan het water. ~€12–15 p.p.</div><div class="stop-time">19:30</div></div></div>
+  <div class="stop"><div class="si n">🌙</div><div><div class="stop-label">Avond Vlorë</div><div class="stop-desc">Levendig studentenleven langs de boulevard. Cocktailbars en terrassen tot laat.</div><div class="stop-time">21:30 →</div></div></div>
+  <div class="warn">⚓ Boek de boottour de avond ervoor via de website van GoBoatVlore of 3 Fiori, of vraag bij aankomst in Vlorë. Bij slecht weer kunnen tours verschoven worden.</div>
+</div>
+
+<!-- Dag 3: Himarë -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Woensdag</span><div><div class="day-title">Vlorë → Himarë<span class="new-badge">Gjipë Beach</span></div><div class="day-sub">Llogara pas + verborgen baai + snorkelen</div></div></div>
+  <div class="stop"><div class="si d">🚗</div><div><div class="stop-label">Rit via Llogara Nationaal Park (~1,5u)</div><div class="stop-desc deco-panel">Spectaculaire bergpas op ~1000m met panorama over de Ionische Zee. Verplichte fotostop.</div><div class="stop-time">09:00 – 10:30</div></div></div>
+  <div class="stop"><div class="si hi">🥾</div><div>
+    <div class="stop-label">Gjipë Beach<span class="new-badge">vast onderdeel</span></div>
+    <div class="stop-desc">Verborgen baai bereikbaar via een korte wandeling (~20–30 min te voet vanaf de parkeerplaats) of per bootje vanuit Dhermi. Smalle canyon die uitkomt op een turkooizen baai ingesloten door rotswanden. Snorkelen langs de klifwanden — rijk onderwaterleven, uitzonderlijk helder water. Een van de mooiste plekken op de rivièra. Neem water en snorkelmasker mee.</div>
+    <div class="stop-time">11:00 – 14:30</div>
+  </div></div>
+  <div class="stop"><div class="si f">🍋</div><div><div class="stop-label">Late lunch Dhermi of Himarë</div><div class="stop-desc">Terrasrestaurant met uitzicht op de kust. Verse octopus, grilled squid. ~€10–12 p.p.</div><div class="stop-time">15:00</div></div></div>
+  <div class="stop"><div class="si w">🏖</div><div><div class="stop-label">Livadhi Beach of Jalë Beach — relaxen</div><div class="stop-desc">Rustige strandmiddag als afsluiter. Jalë is weinig toeristisch, turquoise water. Ligbed of op de kiezels.</div><div class="stop-time">16:30 – 19:00</div></div></div>
+  <div class="stop"><div class="si n">🌅</div><div><div class="stop-label">Diner Himarë promenade</div><div class="stop-desc">Lokaal diner, raki. Vroeg naar bed — morgen Blue Eye voor de drukte.</div><div class="stop-time">20:00 →</div></div></div>
+  <div class="tip">💡 Voor Gjipë: parkeer bij het bordje "Gjipe Canyon" langs de SH8 en wandel ~25 min door de canyon naar de baai. Je kunt ook een watertrucje verhuren in Dhermi om er per boot heen te varen en droog te blijven.</div>
+</div>
+
+<!-- Dag 4: Sarandë -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Donderdag</span><div><div class="day-title">Himarë → Sarandë<span class="star">💧 Blue Eye</span></div><div class="day-sub">Bronwonder + Porto Palermo + laatste avond</div></div></div>
+  <div class="stop"><div class="si w">💧</div><div><div class="stop-label">Blue Eye (Syri i Kaltër) — vroeg vertrek</div><div class="stop-desc deco-panel">~45min van Himarë. Diepblauwe bronwel waar 7°C water omhoog spuit uit een bodemloze ondergrondse bron, midden in het oerwoud. Zwemmen kan maar is ijskoud. Nationaal park, entree ~€2. Ga voor 10:00 om de drukte te vermijden.</div><div class="stop-time">09:00 – 10:30</div></div></div>
+  <div class="stop"><div class="si w">🏰</div><div><div class="stop-label">Porto Palermo</div><div class="stop-desc">Ottomaans kasteel aan het water met verborgen communistische onderzeebootbunker. Gratis of €2. Mooi zwembad vlakbij voor een snelle duik onderweg.</div><div class="stop-time">11:00 – 12:30</div></div></div>
+  <div class="stop"><div class="si f">🥗</div><div><div class="stop-label">Lunch & inchecken Sarandë</div><div class="stop-desc">~45min van Porto Palermo. Inchecken, uitgebreide lunch aan de promenade.</div><div class="stop-time">13:00 – 14:30</div></div></div>
+  <div class="stop"><div class="si w">🏖</div><div><div class="stop-label">Vrije middag Sarandë</div><div class="stop-desc">Strand, snorkelboottour vanuit Sarandë (WO2-wrak + verborgen baaien), of gewoon relaxen op de boulevard.</div><div class="stop-time">15:00 – 18:30</div></div></div>
+  <div class="stop"><div class="si n">🍷</div><div><div class="stop-label">Afsluitersdiner + nachtleven</div><div class="stop-desc">Çofte, tave dheu, lokale wijn. Sarandë boulevard is levendig. Morgen vroeg de deur uit.</div><div class="stop-time">19:30 →</div></div></div>
+</div>
+
+<!-- Dag 5: Vertrek -->
+<div class="day-card">
+  <div class="day-card-header"><span class="day-badge">Vrijdag</span><div><div class="day-title">Sarandë → Tirana → vlucht 18:00</div><div class="day-sub">~3,5u rijden — vertrek uiterlijk 08:30</div></div></div>
+  <div class="stop"><div class="si d">🚗</div><div><div class="stop-label">Vroeg vertrek — 08:00–08:30</div><div class="stop-desc deco-panel">~3,5u rijden. Optioneel koffie-stop in Vlorë. Ruim op tijd in Tirana voor auto inleveren.</div><div class="stop-time">08:00 – 11:30</div></div></div>
+  <div class="stop"><div class="si f">☕</div><div><div class="stop-label">Laatste koffie Blloku (optioneel)</div><div class="stop-desc">Als je wat vroeger aankomt, nog even een terrasje in Blloku voordat je de auto inlevert.</div><div class="stop-time">12:00 – 13:30</div></div></div>
+  <div class="stop"><div class="si d">✈</div><div><div class="stop-label">TIA — vertrek 14:00, vlucht 18:00</div><div class="stop-desc">30min naar vliegveld. Check-in sluit ~16:00.</div><div class="stop-time">14:00 →</div></div></div>
+  <div class="warn">⚠ Vertrek Sarandë uiterlijk 08:30. De SH8 heeft smalle bochten — reken 3,5u aan, niet minder.</div>
+</div>
+
+</div>
